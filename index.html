@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>🐴 Mudoshop</title>
+<meta name="description" content="SNSアカウント販売サイト">
+<link rel="icon" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#f8fafc; --fg:#0f172a; --muted:#64748b; --border:#e5e7eb;
+    --blue:#2563eb; --blue2:#3b82f6; --purple:#7c3aed;
+    --amber:#f59e0b; --amber-bg:#fff8e6;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--fg);
+    font-family:Inter,"Noto Sans JP",-apple-system,system-ui,"Segoe UI","Hiragino Kaku Gothic ProN",Meiryo,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 20px;}
+
+  /* Header */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:rgba(255,255,255,.85);backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav{display:flex;align-items:center;justify-content:space-between;height:64px;}
+  .brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;}
+  .brand img{width:36px;height:36px;border-radius:8px;}
+  .nav-right{display:flex;align-items:center;gap:14px;}
+  .link-gray{color:var(--muted);font-weight:500;font-size:15px;}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    border-radius:9999px;font-weight:600;font-size:15px;
+    padding:9px 18px;cursor:pointer;border:none;transition:.15s;
+  }
+  .btn-primary{background:var(--blue);color:#fff;}
+  .btn-primary:hover{background:#1d4ed8;}
+  .btn-ghost{background:transparent;color:var(--muted);}
+  .hamburger{display:none;flex-direction:column;gap:4px;cursor:pointer;}
+  .hamburger span{width:22px;height:2px;background:var(--muted);border-radius:2px;}
+
+  /* Premium banner */
+  .banner{
+    background:var(--amber-bg);border:1px solid #fde9b5;
+    border-radius:16px;padding:16px 20px;margin-top:20px;
+    display:flex;align-items:center;gap:16px;
+  }
+  .crown{
+    width:44px;height:44px;flex:0 0 44px;border-radius:50%;
+    background:linear-gradient(135deg,#f59e0b,#fbbf24);
+    display:flex;align-items:center;justify-content:center;font-size:22px;
+  }
+  .banner-body{flex:1;font-size:15px;}
+  .banner-title{font-weight:700;color:#b45309;}
+  .banner-sub{color:var(--muted);font-size:14px;}
+  .cta{color:var(--amber);font-weight:600;}
+  .banner-close{color:var(--muted);cursor:pointer;font-size:18px;}
+
+  /* Hero */
+  .hero{
+    margin-top:20px;border-radius:24px;overflow:hidden;position:relative;
+    background:linear-gradient(135deg,#7c3aed 0%,#3b82f6 100%);
+    color:#fff;padding:48px 40px;
+  }
+  .hero::before{
+    content:"";position:absolute;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.18) 1px,transparent 1px);
+    background-size:18px 18px;opacity:.5;
+  }
+  .hero-inner{position:relative;z-index:1;max-width:640px;}
+  .stock-pill{
+    display:inline-flex;align-items:center;gap:8px;
+    background:rgba(255,255,255,.15);border-radius:9999px;
+    padding:6px 14px;font-size:13px;font-weight:600;margin-bottom:20px;
+  }
+  .stock-pill .dot{width:8px;height:8px;border-radius:50%;background:#fff;}
+  .hero h1{font-size:40px;font-weight:800;line-height:1.2;margin:0 0 16px;}
+  .hero p{font-size:17px;opacity:.95;margin:0 0 28px;}
+  .trust{display:flex;gap:24px;flex-wrap:wrap;}
+  .trust div{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;}
+  .trust .ic{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:15px;}
+
+  /* Products */
+  .products{margin-top:48px;}
+  .section-title{font-size:24px;font-weight:800;margin:0 0 20px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;}
+  .card{
+    background:#fff;border:1px solid var(--border);border-radius:16px;overflow:hidden;
+    display:flex;flex-direction:column;transition:.15s;
+  }
+  .card:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(15,23,42,.08);}
+  .card-img{aspect-ratio:4/3;overflow:hidden;background:#f1f5f9;}
+  .card-img img{width:100%;height:100%;object-fit:cover;display:block;}
+  .card-body{padding:18px;display:flex;flex-direction:column;gap:10px;flex:1;}
+  .card-top{display:flex;align-items:center;justify-content:space-between;}
+  .platform{display:inline-flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);}
+  .status{
+    background:#f1f5f9;color:#fff;background-color:#d1d5db;color:#fff;
+    font-size:12px;font-weight:600;padding:3px 10px;border-radius:10px;
+  }
+  .card h3{font-size:16px;font-weight:700;margin:0;line-height:1.4;}
+  .card .desc{font-size:13px;color:var(--muted);flex:1;line-height:1.6;}
+  .card-foot{display:flex;align-items:center;justify-content:space-between;margin-top:8px;}
+  .card-stock{font-size:13px;color:var(--muted);}
+  .price{font-size:18px;font-weight:800;color:#1d4ed8;}
+  .price small{font-size:12px;font-weight:500;color:var(--muted);}
+  .dash{color:#d1d5db;}
+
+  /* Footer */
+  footer{
+    margin-top:56px;background:#fff;border-top:1px solid var(--border);
+    padding:32px 0;
+  }
+  .footer-links{display:flex;flex-wrap:wrap;gap:18px;justify-content:center;margin-bottom:16px;}
+  .footer-links a{color:var(--muted);font-size:14px;}
+  .footer-links a:hover{color:var(--fg);}
+  .copyright{text-align:center;color:var(--muted);font-size:13px;}
+
+  @media(max-width:640px){
+    .hero{padding:32px 24px;}
+    .hero h1{font-size:28px;}
+    .nav-right .link-gray,.nav-right .btn-ghost{display:none;}
+    .hamburger{display:flex;}
+    .banner{flex-direction:column;align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="brand" href="#">
+      <img src="logo.png" alt="Mudoshop">
+      <span>Mudoshop</span>
+    </a>
+    <div class="nav-right">
+      <a class="link-gray" href="#">新規登録</a>
+      <a class="btn btn-primary" href="#">ログイン</a>
+      <div class="hamburger"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="banner">
+    <div class="crown">👑</div>
+    <div class="banner-body">
+      <div class="banner-title">🎉 Mudo Premium を実装しました！</div>
+      <div class="banner-sub">月額 ¥480〜 でボーナス最大 +20%・毎月ポイント付与・優先サポート <a class="cta" href="#">加入はこちら &gt;</a></div>
+    </div>
+    <div class="banner-close">×</div>
+  </div>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="stock-pill"><span class="dot"></span>在庫 0 点</div>
+      <h1>高品質アカウントを、<br>もっと手軽に。</h1>
+      <p>メール認証済みのアカウントを即時にお渡し。チャージして、必要な分だけ購入できます。</p>
+      <div class="trust">
+        <div><span class="ic">⚡</span>即購入可能</div>
+        <div><span class="ic">✉️</span>メール認証済み</div>
+        <div><span class="ic">🛡️</span>安心の保証制度</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="products">
+    <div class="grid">
+
+      <a class="card" href="#">
+        <div class="card-img"><img src="prod1.png" alt="Twitter シャドウバン解除済みOLD 日本語運用"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="platform">🐦 Twitter</span>
+            <span class="status">入荷待ち</span>
+          </div>
+          <h3>Twitter シャドウバン解除済みOLD 日本語運用</h3>
+          <p class="desc">シャドウバン解除済みの最新に乗るOLDアカウントです。すべてメールアドレス認証がされているものになります。2faが含まれているものと含まれていないものが混ざっています。フォロワー数は0~30人のランダムです。アカウント作成日は2009~ ランダムです</p>
+          <div class="card-foot">
+            <span class="card-stock">在庫 0</span>
+            <span class="price">¥1,000<small>/個</small></span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-img"><img src="prod2.png" alt="Twitter シャドウバン解除済みOLD NFAアカウント"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="platform">🐦 Twitter</span>
+            <span class="status">入荷待ち</span>
+          </div>
+          <h3>Twitter シャドウバン解除済みOLD NFAアカウント</h3>
+          <p class="desc">シャドウバン解除済みの最新に乗るOLDアカウントです。こちらは元のメールアドレスにアクセスできず、基本的にauthtokenでのみログイン可能なアカウントです。idとパスワードでも認証が発生せずログインできる場合もあります。品質自体はFAアカウントと同じなため、トークンログインが可能な方にはお得な商品となっております。トークンログインの方法はこちら(PC) https://mudostore.net/guide ※スマホではXcontrolというアプリを使用することで可能です。このアカウントに関しては「トークンログインの環境がなくログインできない」やその他環境による自己都合での理由での返金は致しかねます。必ず説明を読んでからのご購入をお願いします。フォロワー数は0~30人のランダムです。アカウント作成日は2009~ ランダムです</p>
+          <div class="card-foot">
+            <span class="card-stock">在庫 0</span>
+            <span class="price">¥800<small>/個</small></span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-img"><img src="prod3.png" alt="Twitter フォロワー100+ FAアカウント"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="platform">🐦 Twitter</span>
+            <span class="status">入荷待ち</span>
+          </div>
+          <h3>Twitter フォロワー100+ FAアカウント</h3>
+          <p class="desc">フォロワーが100人以上いる高品質なアカウントです。通常シャドウバン解除済みアカウントと同じように日本語運用済みで、話題最新に乗る状態です。</p>
+          <div class="card-foot">
+            <span class="card-stock">在庫 0</span>
+            <span class="price">¥1,600<small>/個</small></span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-img"><img src="prod4.png" alt="Twitter フォロワー100+ NFAアカウント"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="platform">🐦 Twitter</span>
+            <span class="status">入荷待ち</span>
+          </div>
+          <h3>Twitter フォロワー100+ NFAアカウント</h3>
+          <p class="desc">フォロワーが100人以上いる高品質なアカウントです。通常シャドウバン解除済みアカウントと同じように日本語運用済みで、話題最新に乗る状態です。こちらは元のメールアドレスにアクセスできず、基本的にauthtokenでのみログイン可能なアカウントです。idとパスワードでも認証が発生せずログインできる場合もあります。品質自体はFAアカウントと同じなため、トークンログインが可能な方にはお得な商品となっております。このアカウントに関しては「トークンログインの環境がなくログインできない」やその他環境による自己都合での理由での返金は致しかねます。必ず説明を読んでからのご購入をお願いします。</p>
+          <div class="card-foot">
+            <span class="card-stock">在庫 0</span>
+            <span class="price">¥1,300<small>/個</small></span>
+          </div>
+        </div>
+      </a>
+
+      <a class="card" href="#">
+        <div class="card-img"><img src="prod5.png" alt="Instagram 作成後1か月～アカウント 作成環境情報付き"></div>
+        <div class="card-body">
+          <div class="card-top">
+            <span class="platform">📷 Instagram</span>
+            <span class="status">入荷待ち</span>
+          </div>
+          <h3>Instagram 作成後1か月～アカウント 作成環境情報付き</h3>
+          <p class="desc">作成後1か月経過したInstagramの通常のアカウントです。形式は username:pass:2fa | UA | deviceIDs | cookies もしくはusername:pass:2fa のみとなっております。端末Banされてないもので、万が一ログイン時にロックされた場合、一度だけ交換対象となります。メールアドレスは含まれていません。仕入れ時から記載されていませんので、変更はできませんがログインには問題ありませんのでご安心ください。</p>
+          <div class="card-foot">
+            <span class="card-stock">在庫 0</span>
+            <span class="price">¥500<small>/個</small></span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-links">
+      <a href="#">利用規約</a>
+      <a href="#">プライバシーポリシー</a>
+      <a href="#">特定商取引法に基づく表記</a>
+      <a href="#">捜査関係者の方へ</a>
+      <a href="#">お問い合わせ</a>
+    </div>
+    <div class="copyright">© 2026 XStore. All rights reserved.</div>
+  </div>
+</footer>
+
+</body>
+</html>
