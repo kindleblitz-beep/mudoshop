@@ -24,5 +24,3 @@ jobs:
           path: staging
       - id: deployment
         uses: actions/deploy-pages@v4
-        with:
-          cname: grow-x.online
