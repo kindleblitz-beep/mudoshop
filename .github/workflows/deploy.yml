@@ -18,9 +18,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: false
+      - name: Staging
+        run: |
+          mkdir -p $RUNNER_TEMP/staging
+          cp index.html logo.png prod1.png prod2.png prod3.png prod4.png prod5.png $RUNNER_TEMP/staging/
+          echo "staged files:" && ls -la $RUNNER_TEMP/staging
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
-          path: .
+          path: $RUNNER_TEMP/staging
       - id: deployment
         uses: actions/deploy-pages@v4
+        with:
+          retry: 5
